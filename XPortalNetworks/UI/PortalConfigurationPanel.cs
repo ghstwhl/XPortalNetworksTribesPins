@@ -644,6 +644,15 @@ namespace XPortalNetworks.UI
 
         public void HandleInput()
         {
+            // Escape hatch: always allow closing the panel (and thus releasing
+            // GUIManager.BlockInput(false)) even if the UIGroupHandler / UIGamePad
+            // interactive state is wrong. Without this the panel can become a dead end.
+            if (Input.GetKeyDown(KeyCode.Escape) || ZInput.GetKeyDown(KeyCode.Escape))
+            {
+                Hide();
+                return;
+            }
+
             bool gamepad = ZInput.IsGamepadActive();
             for (int i = 0; i < dropdownListNavHints.Count; i++)
             {
@@ -1269,7 +1278,11 @@ namespace XPortalNetworks.UI
                         draggable: false);
                 mainPanel.name = GO_MAINPANEL;
                 mainPanel.AddComponent<CanvasGroup>();
-                mainPanel.AddComponent<UIGroupHandler>();
+                UIGroupHandler groupHandler = mainPanel.AddComponent<UIGroupHandler>();
+                // Outrank background HUDs and third-party mod panels. UIGroupHandler.Update()
+                // forces CanvasGroup.interactable from the highest active m_groupPriority, so a
+                // lower priority would make the panel render but ignore all input.
+                groupHandler.m_groupPriority = 100;
 
                 if (!mainPanel.GetComponentInParent<Localize>())
                 {

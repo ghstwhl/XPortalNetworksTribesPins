@@ -1,7 +1,7 @@
 ﻿{
   "name": "XPortalNetworksTribesPins",
   "description": "Select portal destination from a list of existing portals with custom networks with private portal and tribe restrictions. No more tag pairing, and no more portal hubs!  Also manages map pins for the portals a player is allowed to use.",
-  "version_number": "3.1.1",
+  "version_number": "3.1.2",
   "website_url": "https://github.com/ghstwhl/XPortalNetworksTribesPins",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2350",

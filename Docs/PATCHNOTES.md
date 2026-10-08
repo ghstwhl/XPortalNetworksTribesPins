@@ -1,3 +1,10 @@
+# 3.1.2 - Portal Configuration Panel UI Hardening
+Two ways the portal configuration panel could dead-end are fixed; both are ported from the upstream mod's later "UI Interaction Hardening" release.
+* **The panel can no longer be made unclickable by another UI (`UI/PortalConfigurationPanel.cs`)**
+  * The panel's `UIGroupHandler.m_groupPriority` is now `100`. Vanilla's `UIGroupHandler.Update()` forces `CanvasGroup.interactable` from the highest active group priority, so with the previous default of `0` any background HUD or third-party mod panel active at a higher priority silently switched the panel's interactivity off: it still rendered, but every click, toggle, text box and button - Cancel included - was ignored. This is what made the panel feel locked near the world spawn, where other UI groups are active, while an area without them behaved normally.
+* **Escape always closes the panel and releases input (`UI/PortalConfigurationPanel.cs`)**
+  * `PortalConfigurationPanel.HandleInput()` now checks `Input.GetKeyDown(KeyCode.Escape)` / `ZInput.GetKeyDown(KeyCode.Escape)` first and closes the panel, so the escape hatch no longer depends on the affected `UIGroupHandler` / `UIGamePad` interactive state. Closing the panel releases `GUIManager.BlockInput(false)`, which is what previously left the game input-blocked with no way back to the escape menu (the panel has to be closed before the game's own Escape menu can open again while it holds the input block).
+
 # 3.1.1 - Documentation Presentation & Asset Cleanup
 The docs now show the mod with a single hero screenshot, and every image they hot-link lives in this repository. The images nothing referenced any more are gone with them.
 * **One hero screenshot instead of three (`README.md`)**

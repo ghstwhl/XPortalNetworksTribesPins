@@ -1,3 +1,8 @@
+# 3.1.2 - Portal Configuration Panel UI Hardening
+The portal configuration panel can no longer be locked into a state where it is visible but ignores all input.
+* **UI priority**: the panel's `UIGroupHandler.m_groupPriority` is now set to `100`. Vanilla's `UIGroupHandler.Update()` drives `CanvasGroup.interactable` from the highest active group priority, so with the old default of `0` a background HUD or third-party mod panel active at a higher priority silently disabled every click, toggle, text box and button - Cancel included - while the panel was still drawn. That is what made the panel feel locked near the world spawn, where other UI groups are active, while areas without them worked normally.
+* **Escape fallback**: `HandleInput()` now closes the panel on `Input`/`ZInput` `KeyCode.Escape` before anything else, so the panel can always be closed (releasing `GUIManager.BlockInput(false)`) regardless of the `UIGroupHandler` / `UIGamePad` state - previously the panel held the input block and Escape could not reach the game's own menu.
+
 # 3.1.1 - Documentation Presentation & Asset Cleanup
 The docs now show the mod with one hero screenshot, and every image they hot-link lives in this repository.
 * **One hero screenshot instead of three**: the three stacked UI screenshots (portal configuration, network selection, destination selection) in `README.md` are replaced by a single "Opposing Tribe Views" image, `images/split-tribe-view.png` - three windows of the same feature read better as one picture.

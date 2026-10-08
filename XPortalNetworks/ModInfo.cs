@@ -30,7 +30,7 @@ namespace Mod
         // These drive the generated install links and the build's package staging folder.
         public const string ThunderstoreTeam = "NorCal_Nerds";
         public const string ThunderstorePackage = "XPortalNetworksTribesPins";
-        public const string Version = "3.1.1";
+        public const string Version = "3.1.2";
         public const string Description = "Select portal destination from a list of existing portals with custom networks with private portal and tribe restrictions. No more tag pairing, and no more portal hubs!  Also manages map pins for the portals a player is allowed to use.";
         public const string WebsiteUrl = "https://github.com/" + GitHubRepo;
         public const int NexusId = 4092;

@@ -13,7 +13,7 @@
 -->
 <Project>
   <PropertyGroup>
-    <ValheimGameVersion Condition="'$(ValheimGameVersion)' == ''">1.0.16</ValheimGameVersion>
+    <ValheimGameVersion Condition="'$(ValheimGameVersion)' == ''">1.0.17</ValheimGameVersion>
 
     <_ValheimRefsRoot>$(MSBuildThisFileDirectory).references</_ValheimRefsRoot>
     <ReferencesRoot Condition="'$(ReferencesRoot)' == '' And Exists('$(_ValheimRefsRoot)\Valheim\$(ValheimGameVersion)\assembly_valheim_publicized.dll')">$(_ValheimRefsRoot)</ReferencesRoot>
