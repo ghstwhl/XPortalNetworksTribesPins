@@ -5,6 +5,7 @@ using BepInEx;
 using Jotunn.Managers;
 using Jotunn.Utils;
 using UnityEngine;
+using XPortalNetworks.Compatibility;
 using XPortalNetworks.Extension;
 using XPortalNetworks.RPC;
 using XPortalNetworks.UI;
@@ -14,6 +15,11 @@ namespace XPortalNetworks
     [BepInPlugin(Mod.Info.GUID, Mod.Info.Name, Mod.Info.Version)]
     [BepInIncompatibility("com.sweetgiorni.anyportal")]
     [BepInDependency(Jotunn.Main.ModGuid)]
+    // Soft dependencies on the older XPortal plugins we neutralise at start-up (see LegacyCompatibility).
+    // Declaring them (instead of only probing the chainloader at runtime) makes BepInEx load this plugin
+    // after them, so their instances exist by the time we disable them and unpatch their Harmony patches.
+    [BepInDependency(LegacyCompatibility.LegacyXPortalPluginGuid, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(LegacyCompatibility.UpstreamXPortalPluginGuid, BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Patch)]
     // Hand the server-owned config entries (those tagged with ConfigurationManagerAttributes.IsAdminOnly)
     // over to Jotunn's ServerSync: the server pushes its values to every client on join and whenever
@@ -62,6 +68,8 @@ namespace XPortalNetworks
 
             MinimapManager.OnVanillaMapDataLoaded += MinimapManager_OnVanillaMapDataLoaded;
 
+            // Disable any older XPortal plugin and remove its patches before we apply our own.
+            LegacyCompatibility.NeutralizeLegacyXPortal();
             Patches.Patcher.Patch();
         }
 

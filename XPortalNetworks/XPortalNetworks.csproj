@@ -19,7 +19,7 @@
         <MSBuildWarningsAsMessages>MSB3277;MSB3245;MSB3243</MSBuildWarningsAsMessages>
         <ReferencesRoot Condition="'$(ReferencesRoot)' == ''">/home/vapok/Modding/References</ReferencesRoot>
         <VALHEIM_INSTALL>$(ReferencesRoot)\Valheim\$(ValheimGameVersion)</VALHEIM_INSTALL>
-        <BEPINEX_PATH>$(ReferencesRoot)\BepInEx\5.4.2350\BepInEx</BEPINEX_PATH>
+        <BEPINEX_PATH>$(ReferencesRoot)\BepInEx\5.4.2351\BepInEx</BEPINEX_PATH>
         <ReleaseRoot>/home/vapok/Modding/Releases</ReleaseRoot>
         <ModRoot>/home/vapok/Modding/Valheim</ModRoot>
         <!-- Package staging folder name. tools/Build.ps1 overrides this from ModInfo.cs
@@ -135,7 +135,9 @@
         <Compile Include="RPC\SendToClient.cs" />
         <Compile Include="QueuedAction.cs" />
         <Compile Include="XPortalNetworksConfig.cs" />
+        <Compile Include="Compatibility\LegacyCompatibility.cs" />
         <Compile Include="UI\PortalConfigurationPanel.cs" />
+        <Compile Include="UI\UIFonts.cs" />
         <Compile Include="Patches\Patcher.cs" />
         <Compile Include="KnownPortal.cs" />
         <Compile Include="Properties\IgnoreAccessModifiers.cs" />

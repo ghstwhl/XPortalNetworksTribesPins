@@ -4,9 +4,9 @@ External sources used while developing, fixing and documenting **XPortal Network
 BepInEx mod). Everything listed is a third-party artifact or publication; none of it is
 distributed with this repository.
 
-- **Mod version at time of writing:** 3.0.0
-- **Game:** Valheim 1.0.16 — Unity **6000.0.75f1** (`UnityPlayer.dll` reports `6000.0.75.2503836`)
-- **Last updated:** 2026-09-29
+- **Mod version at time of writing:** 3.1.5
+- **Game:** Valheim 1.0.20 — Unity **6000.0.75f1** (`UnityPlayer.dll` reports `6000.0.75.2503836`)
+- **Last updated:** 2026-10-16
 
 Paths below are the ones used on the development machine; the repository expects the same
 layout under `$(ReferencesRoot)` (`.references/`) — see [`.references/README.md`](.references/README.md).
@@ -17,7 +17,7 @@ layout under `$(ReferencesRoot)` (`.references/`) — see [`.references/README.m
 
 | Source | Location / version | Used for |
 |---|---|---|
-| Valheim game assemblies | `<Steam>\steamapps\common\Valheim\Valheim_Data\Managed\` — 1.0.16 | All gameplay API facts: `ZNet`, `ZDO`/`ZDOMan`, `ZRoutedRpc`, `ZPackage`, `ZNetView`, `ZDOID`, `Character.RPC_TeleportTo`, `TeleportWorld`, `Piece`, `ZInput`, `ZoneSystem`, `Game` |
+| Valheim game assemblies | `<Steam>\steamapps\common\Valheim\Valheim_Data\Managed\` — 1.0.20 | All gameplay API facts: `ZNet`, `ZDO`/`ZDOMan`, `ZRoutedRpc`, `ZPackage`, `ZNetView`, `ZDOID`, `Character.RPC_TeleportTo`, `TeleportWorld`, `Piece`, `ZInput`, `ZoneSystem`, `Game` |
 | Valheim platform identity | `Splatform.PlatformUserID`, `UserInfo`, `ZNet.PlayerInfo`, `ZNet.CrossNetworkUserInfo` (same assemblies) | Player identity for `allow_list` matching (`Steam_<id>` format) |
 | Unity engine modules | `<Steam>\...\Valheim_Data\Managed\UnityEngine*.dll`, `Unity.TextMeshPro.dll` | UI (`UI/PortalConfigurationPanel.cs`), `Vector3`, `RectTransform`, `FileSystemWatcher`-adjacent file IO |
 | Valheim dedicated-server admin list | `ZNet.PlayerIsAdmin`, `ZNet.LocalPlayerIsAdminOrHost` | Admin detection for the portal-network bypass and admin-only config entries |
@@ -29,7 +29,7 @@ layout under `$(ReferencesRoot)` (`.references/`) — see [`.references/README.m
 
 | Source | Version | Where it comes from | Used for |
 |---|---|---|---|
-| **BepInEx 5 LTS** — the build Valheim uses, and the one this mod compiles against: <https://github.com/AzumattDev/BepInEx> (branch **`v5-lts`**, maintained by Azumatt) | pack **5.4.2350** = assembly **5.4.23.5** (`BepInEx.dll`, `BepInEx.Harmony.dll`; built from commit `ef506e0a`, *"Bump ThunderStore version to 5.4.2350"*) | `denikson-BepInExPack_Valheim-5.4.2350` (Thunderstore); `.references/BepInEx/5.4.2350/BepInEx/core/` | Plugin/base framework, `ConfigFile`/`ConfigEntry`/`ConfigDescription`, config reload + `SettingChanged` events |
+| **BepInEx 5 LTS** — the build Valheim uses, and the one this mod compiles against: <https://github.com/AzumattDev/BepInEx> (branch **`v5-lts`**, maintained by Azumatt) | pack **5.4.2351** = assembly **5.4.23.5** (`BepInEx.dll`, `BepInEx.Harmony.dll`; built from commit `fd72254e`, *"Bump ThunderStore version to 5.4.2351"*) | `denikson-BepInExPack_Valheim-5.4.2351` (Thunderstore); `.references/BepInEx/5.4.2351/BepInEx/core/` | Plugin/base framework, `ConfigFile`/`ConfigEntry`/`ConfigDescription`, config reload + `SettingChanged` events |
 | **BepInEx** (upstream 5.x line) — <https://github.com/BepInEx/BepInEx> | 5.4.x (EOL) | Cite reference only | Historical/API reference; **not** the source of the pack we build against — see the note below this table |
 | **HarmonyX** — <https://github.com/BepInEx/HarmonyX> | 2.9.0 (`0Harmony.dll`) | BepInEx pack / `packages.config` reference | All runtime patches (`Patches/*`) |
 | **Jötunn (Jotunn)** — <https://github.com/ValheimModding/Jotunn> | 2.30.2 | NuGet package `JotunnLib` 2.30.2 (`packages.config`); <https://www.nuget.org/packages/JotunnLib> | Mod-framework helpers; **`Jotunn.Managers.SynchronizationManager`** (ServerSync), `SynchronizationModeAttribute` + `AdminOnlyStrictness`, `NetworkCompatibility`, `GUIManager.IsHeadless()`, `MinimapManager`, `ConfigEntryBaseExtension` |
@@ -41,15 +41,20 @@ layout under `$(ReferencesRoot)` (`.references/`) — see [`.references/README.m
 Valheim's BepInEx is **not** built from <https://github.com/BepInEx/BepInEx> (that 5.x line is EOL). The
 `denikson-BepInExPack_Valheim` pack ships a maintenance build from
 **<https://github.com/AzumattDev/BepInEx>** — branch **`v5-lts`** (a second branch, `TSChanges`, carries the
-Thunderstore packaging). Verified 2026-09-29:
+Thunderstore packaging).
 
-- `Directory.Build.props` on `v5-lts` declares `<BepInExVersionPrefix>5.4.23.5</BepInExVersionPrefix>`.
-- The pack names that same build **`5.4.2350`**, and the `BepInEx.dll` in
-  `.references/BepInEx/5.4.2350/BepInEx/core/` reports file/product version
-  `5.4.23.5+ef506e0a6bb98c49d85b7927b5ab625605826be0`.
-- That commit (`ef506e0a`) resolves **only** in `AzumattDev/BepInEx` — its message is literally
-  *"Bump ThunderStore version to 5.4.2350"* — and does not exist upstream
-  (`GET /repos/BepInEx/BepInEx/commits/ef506e0a…` → HTTP 422).
+- `Directory.Build.props` on `v5-lts` declares `<BepInExVersionPrefix>5.4.23.5</BepInExVersionPrefix>`, and
+  Azumatt's pack-version commits change only the Thunderstore package name: the `5.4.2350` and `5.4.2351`
+  packs **both** report assembly `5.4.23.5`, carrying different pack-version commits (`ef506e0a`
+  *"Bump ThunderStore version to 5.4.2350"* and `fd72254e` *"Bump ThunderStore version to 5.4.2351"*).
+- Moving the reference from `5.4.2350` to `5.4.2351` is therefore an alignment, not an API change.
+  Verified 2026-10-14: `0Harmony.dll` (HarmonyX **2.9.0**) and `BepInEx.Harmony.dll` are byte-identical
+  across the two packs, and a public-API diff of `BepInEx.dll` between them is **empty** (437 public
+  members each). The only files that differ are `BepInEx.dll` and `BepInEx.Preloader.dll`, by the pack's
+  own version commit.
+- `ef506e0a` resolves **only** in `AzumattDev/BepInEx` and does not exist upstream
+  (`GET /repos/BepInEx/BepInEx/commits/ef506e0a…` → HTTP 422) — which is what identified the fork as the
+  real source in the first place (2026-09-29).
 - The fork's `BepInEx.csproj` pins `HarmonyX` **2.9.0**, matching the `0Harmony.dll` 2.9.0 listed above.
 
 So <https://github.com/AzumattDev/BepInEx> (branch `v5-lts`) is the exact upstream source of the framework
@@ -149,7 +154,7 @@ packaging rules followed here:
 
 | Item | As referenced in this repo |
 |---|---|
-| **Thunderstore / BepInExPack_Valheim** | Distribution target; BepInEx core source — the pack `denikson-BepInExPack_Valheim-5.4.2350` is built from the `v5-lts` branch of <https://github.com/AzumattDev/BepInEx> (see §2) |
+| **Thunderstore / BepInExPack_Valheim** | Distribution target; BepInEx core source — the pack `denikson-BepInExPack_Valheim-5.4.2351` is built from the `v5-lts` branch of <https://github.com/AzumattDev/BepInEx> (see §2) |
 
 ## 7. Source-availability notes
 
@@ -191,7 +196,7 @@ Recorded for transparency about where each fact came from:
   `m_pins`/`m_icons`/`m_visibleIconTypes`, `Minimap.PinType` (values 0–17, no portal pin type),
   `PinData`/`SpriteData`, and the fact that `Minimap.UpdatePins` re-assigns every marker's
   `m_iconElement.color` on each of its passes — was verified by Mono.Cecil against
-  `.references/Valheim/1.0.16/assembly_valheim_publicized.dll`, not read from a web source.
+  `.references/Valheim/1.0.20/assembly_valheim_publicized.dll`, not read from a web source.
 
 ## 8. Attribution and licensing
 

@@ -31,7 +31,7 @@
     Directory.Build.props (the single source of truth the csproj also uses).
 
 .PARAMETER BepInExVersion
-    BepInEx version folder name. Default '5.4.2350' (must match the csproj).
+    BepInEx version folder name. Default '5.4.2351' (must match the csproj).
 
 .PARAMETER PublicizerPath
     Path to a prebuilt AssemblyPublicizer.exe. Preferred - see NOTES.
@@ -68,7 +68,7 @@ param(
     [string]$OutputPath,
     [string]$BepInExCorePath,
     [string]$GameVersion,
-    [string]$BepInExVersion = '5.4.2350',
+    [string]$BepInExVersion = '5.4.2351',
     [string]$PublicizerPath,
     [switch]$BuildPublicizer,
     [switch]$Force
@@ -93,7 +93,7 @@ function Get-ConfiguredValheimVersion {
 
 if (-not $GameVersion) {
     $GameVersion = Get-ConfiguredValheimVersion
-    if (-not $GameVersion) { $GameVersion = '1.0.16' }
+    if (-not $GameVersion) { $GameVersion = '1.0.20' }
 }
 
 function Write-Step { param([string]$Message) Write-Host "==> $Message" -ForegroundColor Cyan }
@@ -293,8 +293,8 @@ if (-not $BepInExCorePath) {
 if (-not $BepInExCorePath) {
     throw @"
 BepInEx core assemblies were not found.
-  * Install BepInEx 5.4.2350 into the Valheim folder, OR
-  * Extract them from the 'denikson-BepInExPack_Valheim-5.4.2350' package
+  * Install BepInEx 5.4.2351 into the Valheim folder, OR
+  * Extract them from the 'denikson-BepInExPack_Valheim-5.4.2351' package
     and pass -BepInExCorePath '<folder with BepInEx.dll>'.
 "@
 }

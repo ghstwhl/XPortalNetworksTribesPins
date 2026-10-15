@@ -1254,6 +1254,14 @@ namespace XPortalNetworks.UI
                 return;
             }
 
+            // Point TextMeshPro's default font at the game's own font before any text is created,
+            // so TMP never falls back to its (absent) LiberationSans default and logs warnings.
+            TMP_FontAsset defaultFont = UIFonts.GetAveriaSansFont();
+            if (defaultFont != null)
+            {
+                UIFonts.EnsureDefaultFont(defaultFont);
+            }
+
             if (!mainPanel)
             {
                 // Minimum width of Main Panel so that everything fits
@@ -1277,11 +1285,16 @@ namespace XPortalNetworks.UI
                         height: 496f,
                         draggable: false);
                 mainPanel.name = GO_MAINPANEL;
-                mainPanel.AddComponent<CanvasGroup>();
+                // Deliberately NO CanvasGroup on the panel. UIGroupHandler.Update() sets
+                // m_canvasGroup.interactable from the highest active m_groupPriority, so a panel
+                // that owns a CanvasGroup is switched non-interactive (rendered but ignoring every
+                // click) by any background HUD or third-party mod panel with a strictly higher
+                // priority - the 3.1.2 "visible but unclickable" bug, which even a priority of 100
+                // could still lose to. With no CanvasGroup, UIGroupHandler skips that assignment
+                // entirely (it null-checks m_canvasGroup), so the panel's interactivity can never be
+                // suppressed. The handler is still added for its gamepad default-element handling,
+                // and m_groupPriority still drives that.
                 UIGroupHandler groupHandler = mainPanel.AddComponent<UIGroupHandler>();
-                // Outrank background HUDs and third-party mod panels. UIGroupHandler.Update()
-                // forces CanvasGroup.interactable from the highest active m_groupPriority, so a
-                // lower priority would make the panel render but ignore all input.
                 groupHandler.m_groupPriority = 100;
 
                 if (!mainPanel.GetComponentInParent<Localize>())
@@ -1686,10 +1699,18 @@ namespace XPortalNetworks.UI
 
         private GameObject CreateGamepadHint(string buttonName)
         {
-            var goGamepadHint = new GameObject("gamepad_hint", typeof(RectTransform), typeof(TextMeshProUGUI));
+            // Resolve the game font and make it TextMeshPro's default BEFORE the TextMeshProUGUI
+            // below is created, so TMP does not fall back to its absent LiberationSans default
+            // (which logs "The LiberationSans SDF Font Asset was not found" on every hint).
+            TMP_FontAsset font = UIFonts.GetAveriaSansFont();
+            if (font != null)
+            {
+                UIFonts.EnsureDefaultFont(font);
+            }
 
-            var textMesh = goGamepadHint.GetComponent<TextMeshProUGUI>();
-            var font = Resources.FindObjectsOfTypeAll<TMP_FontAsset>().FirstOrDefault(fa => fa.name == "Valheim-AveriaSansLibre");
+            var goGamepadHint = new GameObject("gamepad_hint", typeof(RectTransform));
+
+            var textMesh = goGamepadHint.AddComponent<TextMeshProUGUI>();
 
             textMesh.font = !font ? TMP_Settings.defaultFontAsset : font;
             textMesh.text = $"$KEY_{buttonName}";
