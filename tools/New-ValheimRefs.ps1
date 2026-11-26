@@ -93,7 +93,7 @@ function Get-ConfiguredValheimVersion {
 
 if (-not $GameVersion) {
     $GameVersion = Get-ConfiguredValheimVersion
-    if (-not $GameVersion) { $GameVersion = '1.0.20' }
+    if (-not $GameVersion) { $GameVersion = '1.0.30' }
 }
 
 function Write-Step { param([string]$Message) Write-Host "==> $Message" -ForegroundColor Cyan }
