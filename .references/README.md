@@ -11,7 +11,7 @@ before building.
 > `powershell -ExecutionPolicy Bypass -File .\tools\New-ValheimRefs.ps1 -BuildPublicizer`
 
 > The version folder comes from `ValheimGameVersion` in
-> [`Directory.Build.props`](../Directory.Build.props) (currently **1.0.30**) — the single
+> [`Directory.Build.props`](../Directory.Build.props) (currently **1.0.31**) — the single
 > source of truth the csproj and the `tools/` scripts all use.
 
 > These are copyrighted game/tooling binaries and are **not** distributed with
@@ -19,7 +19,7 @@ before building.
 
 ```
 .references/
-├── Valheim/1.0.30/
+├── Valheim/1.0.31/
 │   ├── assembly_valheim_publicized.dll
 │   ├── assembly_utils_publicized.dll
 │   ├── assembly_guiutils_publicized.dll
@@ -41,9 +41,9 @@ before building.
 
 ## Where to get them
 
-1. **Valheim 1.0.30** — the game's `Valheim_Data/Managed/` folder provides the
+1. **Valheim 1.0.31** — the game's `Valheim_Data/Managed/` folder provides the
    `UnityEngine*`/`Unity.TextMeshPro` assemblies. Copy that folder to
-   `Valheim/1.0.30/Managed/`, and copy `assembly_valheim.dll`,
+   `Valheim/1.0.31/Managed/`, and copy `assembly_valheim.dll`,
    `assembly_utils.dll`, `assembly_guiutils.dll`, `assembly_postprocessing.dll`
    alongside it.
 2. **Publicize** the four `assembly_*.dll` files (strips `internal`) and rename

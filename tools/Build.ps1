@@ -149,7 +149,7 @@ function Get-ValheimGameVersion {
         if ($match.Success) { return $match.Groups[1].Value.Trim() }
     }
 
-    return '1.0.30'
+    return '1.0.31'
 }
 
 function Resolve-Refs {

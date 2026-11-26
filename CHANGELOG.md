@@ -1,3 +1,11 @@
+# 3.1.7 - Valheim 1.0.31 Compatibility
+Verified against Valheim 1.0.31 (Steam buildid `26948984`); no code change was needed, and the build now targets the shipped 1.0.31 assemblies.
+* **Game-version pin and reference assemblies moved to 1.0.31**: `ValheimGameVersion` in `Directory.Build.props` is now `1.0.31` and the publicized reference pack was regenerated from the installed game (`tools/New-ValheimRefs.ps1`). The engine did not move this time - still Unity 6000.0.85f2 - and every `UnityEngine*` assembly is byte-identical to 1.0.30's.
+* **No incompatibility found**: 1.0.31 is a hotfix that changes `assembly_valheim.dll` by only 1 removed / 2 added members - `BuildUi` gains `SearchFieldSelect`/`SearchFieldDeselect` and `BuildUiFavoriteCategoryCheckButton.Awake` is gone (its Build UI memory-leak fix). `assembly_utils`, `assembly_guiutils` and `assembly_postprocessing` are API-identical to 1.0.30.
+* **Every Harmony patch is intact**: all target types and methods still resolve, and all sixteen methods this mod touches - including `TeleportWorld.UpdatePortal`, whose instruction sequence the transpiler matches against - are IL-identical to 1.0.30. None of the changed `BuildUi` members is used here.
+* **Network compatible with 1.0.30**: `ZNet.RPC_PeerInfo` is unchanged, so the network-protocol version stays 42. A 1.0.30 and a 1.0.31 player can still share a session.
+* No gameplay, config, UI or RPC change. Same build for client and server.
+
 # 3.1.6 - Valheim 1.0.30 Compatibility
 Verified against Valheim 1.0.30 (Steam buildid `26870846`); no code change was needed, and the build now targets the shipped 1.0.30 assemblies.
 * **Game-version pin and reference assemblies moved to 1.0.30**: `ValheimGameVersion` in `Directory.Build.props` is now `1.0.30` and the publicized reference pack was regenerated from the installed game (`tools/New-ValheimRefs.ps1`). The engine moved too - Unity **6000.0.75f1 -> 6000.0.85f2** - so every `UnityEngine*` assembly changed.

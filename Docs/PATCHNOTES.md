@@ -1,3 +1,14 @@
+# 3.1.7 - Valheim 1.0.31 Compatibility
+Verified against Valheim 1.0.31 (hotfix released 2026-11-27, Steam buildid `26948984`); no code change was required, and the build now targets the shipped 1.0.31 assemblies.
+* **Game-version pin and reference assemblies moved to 1.0.31 (`Directory.Build.props`, `.references/README.md`, `REFERENCES.md`, `tools/Build.ps1`, `tools/New-ValheimRefs.ps1`)**
+  * `ValheimGameVersion` is now `1.0.31`, and the publicized reference pack was regenerated from the installed game with `tools/New-ValheimRefs.ps1`.
+  * The engine did **not** move this time - still Unity 6000.0.85f2 - and every `UnityEngine*` assembly is byte-identical to 1.0.30's.
+* **No incompatibility found (verified against the shipped 1.0.31 assemblies)**
+  * 1.0.31 changes `assembly_valheim.dll` by exactly **1 removed / 2 added** members against 1.0.30: `BuildUi` gains `SearchFieldSelect(string)`/`SearchFieldDeselect(string)` and `BuildUiFavoriteCategoryCheckButton.Awake()` is gone - the patch's Build UI memory-leak fix. `assembly_utils`, `assembly_guiutils` and `assembly_postprocessing` are **API-identical**.
+  * Every Harmony patch target still resolves, and all sixteen methods this mod touches diff to **zero** IL instructions against 1.0.30: `Game.Awake`/`Start`/`ConnectPortals`/`ConnectPortalsCoroutine`, `TeleportWorld.GetHoverText`/`Teleport`/`UpdatePortal`, `TextInput.RequestText`, `Minimap.UpdatePins`, `Piece.SetCreator`/`CanBeRemoved`, `WearNTear.OnPlaced`/`CanBeRemoved`/`Destroy`, `ZDOMan.ConnectPortals` and `ZNet.RPC_PeerInfo`. `TeleportWorld.UpdatePortal` is instruction-for-instruction identical, so the transpiler's IL pattern still matches.
+  * `ZNet.RPC_PeerInfo` is unchanged, so the network-protocol version stays **42** - consistent with the patch notes, which state that 1.0.31 is network compatible with 1.0.30. A 1.0.30 and a 1.0.31 player can still share a session.
+* No gameplay, config, UI or RPC change; the same build is used on client and server.
+
 # 3.1.6 - Valheim 1.0.30 Compatibility
 Verified against Valheim 1.0.30 (released 2026-11-25, Steam buildid `26870846`); no code change was required, and the build now targets the shipped 1.0.30 assemblies and Unity 6000.0.85f2.
 * **Game-version pin and reference assemblies moved to 1.0.30 (`Directory.Build.props`, `.references/README.md`, `REFERENCES.md`, `tools/Build.ps1`, `tools/New-ValheimRefs.ps1`)**

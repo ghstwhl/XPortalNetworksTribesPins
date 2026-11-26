@@ -4,9 +4,9 @@ External sources used while developing, fixing and documenting **XPortal Network
 BepInEx mod). Everything listed is a third-party artifact or publication; none of it is
 distributed with this repository.
 
-- **Mod version at time of writing:** 3.1.6
-- **Game:** Valheim 1.0.30 — Unity **6000.0.85f2** (`UnityPlayer.dll` reports `6000.0.85.11544624`)
-- **Last updated:** 2026-11-26
+- **Mod version at time of writing:** 3.1.7
+- **Game:** Valheim 1.0.31 — Unity **6000.0.85f2** (`UnityPlayer.dll` reports `6000.0.85.11544624`)
+- **Last updated:** 2026-11-27
 
 Paths below are the ones used on the development machine; the repository expects the same
 layout under `$(ReferencesRoot)` (`.references/`) — see [`.references/README.md`](.references/README.md).
@@ -17,7 +17,7 @@ layout under `$(ReferencesRoot)` (`.references/`) — see [`.references/README.m
 
 | Source | Location / version | Used for |
 |---|---|---|
-| Valheim game assemblies | `<Steam>\steamapps\common\Valheim\Valheim_Data\Managed\` — 1.0.30 | All gameplay API facts: `ZNet`, `ZDO`/`ZDOMan`, `ZRoutedRpc`, `ZPackage`, `ZNetView`, `ZDOID`, `Character.RPC_TeleportTo`, `TeleportWorld`, `Piece`, `ZInput`, `ZoneSystem`, `Game` |
+| Valheim game assemblies | `<Steam>\steamapps\common\Valheim\Valheim_Data\Managed\` — 1.0.31 | All gameplay API facts: `ZNet`, `ZDO`/`ZDOMan`, `ZRoutedRpc`, `ZPackage`, `ZNetView`, `ZDOID`, `Character.RPC_TeleportTo`, `TeleportWorld`, `Piece`, `ZInput`, `ZoneSystem`, `Game` |
 | Valheim platform identity | `Splatform.PlatformUserID`, `UserInfo`, `ZNet.PlayerInfo`, `ZNet.CrossNetworkUserInfo` (same assemblies) | Player identity for `allow_list` matching (`Steam_<id>` format) |
 | Unity engine modules | `<Steam>\...\Valheim_Data\Managed\UnityEngine*.dll`, `Unity.TextMeshPro.dll` | UI (`UI/PortalConfigurationPanel.cs`), `Vector3`, `RectTransform`, `FileSystemWatcher`-adjacent file IO |
 | Valheim dedicated-server admin list | `ZNet.PlayerIsAdmin`, `ZNet.LocalPlayerIsAdminOrHost` | Admin detection for the portal-network bypass and admin-only config entries |
@@ -196,7 +196,7 @@ Recorded for transparency about where each fact came from:
   `m_pins`/`m_icons`/`m_visibleIconTypes`, `Minimap.PinType` (values 0–17, no portal pin type),
   `PinData`/`SpriteData`, and the fact that `Minimap.UpdatePins` re-assigns every marker's
   `m_iconElement.color` on each of its passes — was verified by Mono.Cecil against
-  `.references/Valheim/1.0.30/assembly_valheim_publicized.dll`, not read from a web source.
+  `.references/Valheim/1.0.31/assembly_valheim_publicized.dll`, not read from a web source.
 
 ## 8. Attribution and licensing
 
