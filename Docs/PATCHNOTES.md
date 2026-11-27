@@ -1,3 +1,15 @@
+# 3.1.8 - Jotunn 2.30.3 Alignment
+Dependency alignment; verified compatible before switching, and no code change was needed.
+* **Jotunn dependency moved to 2.30.3 (`XPortalNetworks/packages.config`, `XPortalNetworks/XPortalNetworks.csproj`, `manifest.json`, `Docs/SolutionDir/Package/Release/manifest.json`, `REFERENCES.md`, `tools/README.md`)**
+  * The compile-time reference (`JotunnLib` 2.30.3, `Jotunn` assembly 2.30.3.0) and the declared Thunderstore dependency (`ValheimModding-Jotunn-2.30.3`) move together. `Jotunn.Main.Version`, which the start-up banner prints, follows whatever version is actually installed.
+* **Verified compatible first, on the shipped artifacts rather than the release notes**
+  * API diff of the Thunderstore `plugins/Jotunn.dll` 2.30.2 vs 2.30.3: **4026 -> 4027 members, 1 removed / 2 added - and all three are `private`**. `PrefabManager.RegisterTerrainOp` gains an `ObjectDB` parameter, and `SynchronizationManager/Patches.Menu_IsActive(ref bool)` is new (the Configuration Manager mouse-capture fix). The NuGet `lib/net462/Jotunn.dll` is a *different* build from the Thunderstore one (582,656 vs 526,848 bytes), so the shipped-to-shipped diff is the one that counts.
+  * All 21 Jotunn members this mod binds are present with unchanged signatures in 2.30.3: `GUIManager` (`IsHeadless`, `BlockInput`, `CreateWoodpanel`/`CreateText`/`CreateDropDown`/`CreateInputField`/`CreateButton`/`CreateToggle`, `GetSprite`, `AveriaSerif`, `AveriaSerifBold`, `ValheimOrange`, `TMP_AveriaSansLibre`), `InputManager.AddButton`, `ButtonConfig`, `ConfigurationManagerAttributes.IsAdminOnly`, `Jotunn.Utils.SynchronizationModeAttribute`/`AdminOnlyStrictness`, `Logger.*` and `Main.Version`/`Main.ModGuid`. Nothing Jotunn-internal is reflected into.
+  * Jotunn is not strong-named (`PublicKeyToken=null` in both versions), so a mod compiled against 2.30.2.0 binds to 2.30.3.0 by simple name - existing installs that already updated Jotunn keep working with the previous build.
+  * Behaviour that does change: Jotunn 2.30.3 adds support for lordrasmus's Configuration Manager and fixes mouse capture while a Configuration Manager window is open. That is the one code path this mod shares (it holds `GUIManager.BlockInput` while its panel is open), so the panel is worth re-testing with the CM window open.
+* **`tools/Test-PatchTargets.ps1` now finds Mono.Cecil version-independently** (any `packages\JotunnLib.*\build\Mono.Cecil.dll`), so the next dependency bump cannot quietly fall back to a stale copy.
+* No gameplay, config, UI or RPC change; the same build is used on client and server.
+
 # 3.1.7 - Valheim 1.0.31 Compatibility
 Verified against Valheim 1.0.31 (hotfix released 2026-11-27, Steam buildid `26948984`); no code change was required, and the build now targets the shipped 1.0.31 assemblies.
 * **Game-version pin and reference assemblies moved to 1.0.31 (`Directory.Build.props`, `.references/README.md`, `REFERENCES.md`, `tools/Build.ps1`, `tools/New-ValheimRefs.ps1`)**

@@ -79,11 +79,17 @@ if (-not $ModDll -or -not (Test-Path $ModDll)) {
 }
 
 if (-not $CecilPath) {
-    foreach ($candidate in @(
-            (Join-Path $RepoRoot 'packages\JotunnLib.2.30.2\build\Mono.Cecil.dll'),
-            (Join-Path $RepoRoot 'tools\.cache\publicizer\AssemblyPublicizer\Mono.Cecil.dll')
-        )) {
-        if (Test-Path $candidate) { $CecilPath = $candidate; break }
+    # Version-agnostic on purpose: the JotunnLib package folder is named after the pinned version, so a
+    # dependency bump must not silently disable this check (it would quietly fall back to a stale copy).
+    $cecilCandidates = @()
+    $packagesDir = Join-Path $RepoRoot 'packages'
+    if (Test-Path $packagesDir) {
+        $cecilCandidates += @(Get-ChildItem -Path $packagesDir -Filter 'Mono.Cecil.dll' -Recurse -File -ErrorAction SilentlyContinue |
+            Sort-Object FullName -Descending | ForEach-Object { $_.FullName })
+    }
+    $cecilCandidates += (Join-Path $RepoRoot 'tools\.cache\publicizer\AssemblyPublicizer\Mono.Cecil.dll')
+    foreach ($candidate in $cecilCandidates) {
+        if ($candidate -and (Test-Path $candidate)) { $CecilPath = $candidate; break }
     }
 }
 if (-not $CecilPath -or -not (Test-Path $CecilPath)) { throw "Mono.Cecil.dll not found - pass -CecilPath." }

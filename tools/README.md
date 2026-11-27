@@ -175,7 +175,7 @@ would fail to apply.
 | `-ReferencesRoot` | `<repo>\.references` (or `$env:ReferencesRoot`) | Folder with the publicized reference assemblies. |
 | `-GameVersion` | `ValheimGameVersion` from `Directory.Build.props` | Game version folder to check against. |
 | `-ModDll` | `XPortalNetworks\bin\Release\XPortalNetworks.dll` (then Debug) | Built assembly to check. |
-| `-CecilPath` | `packages\JotunnLib.2.30.2\build\Mono.Cecil.dll` (then the publicizer cache) | Path to Mono.Cecil.dll. |
+| `-CecilPath` | any `Mono.Cecil.dll` under `packages\JotunnLib.*\build\` (then the publicizer cache) | Path to Mono.Cecil.dll. |
 
 It does **not** prove that a patched method's *body* is unchanged, which is what the
 `TeleportWorld.UpdatePortal` transpiler depends on. For that, dump each patched method's IL

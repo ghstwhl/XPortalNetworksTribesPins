@@ -1,3 +1,10 @@
+# 3.1.8 - Jotunn 2.30.3 Alignment
+Dependency alignment and verification only; no gameplay, config, UI or RPC change.
+* **Jotunn dependency moved to 2.30.3**: the compile-time `JotunnLib` package and the declared Thunderstore dependency now name 2.30.3 (`ValheimModding-Jotunn-2.30.3`), and the build references `Jotunn, Version=2.30.3.0`. `Jotunn.Main.Version`, printed in the log at start-up, reports whichever version is installed.
+* **Verified compatible before switching**: the shipped Thunderstore `Jotunn.dll` 2.30.2 -> 2.30.3 diff is 1 removed / 2 added, and all three are private members (a `PrefabManager.RegisterTerrainOp` signature change and the new Configuration Manager mouse-capture patch). The public API this mod uses is untouched - all 21 bound members are present with unchanged signatures - and because Jotunn is not strong-named, mods compiled against 2.30.2 keep working when 2.30.3 is installed.
+* **`tools/Test-PatchTargets.ps1`** now locates `Mono.Cecil.dll` under any `packages\JotunnLib.*` folder, instead of a pinned version path that a future bump would silently outdate.
+* **Worth checking in game**: Jotunn 2.30.3 supports lordrasmus's Configuration Manager and fixes mouse capture while a Configuration Manager window is open - open the portal panel while the CM window is open.
+
 # 3.1.7 - Valheim 1.0.31 Compatibility
 Verified against Valheim 1.0.31 (Steam buildid `26948984`); no code change was needed, and the build now targets the shipped 1.0.31 assemblies.
 * **Game-version pin and reference assemblies moved to 1.0.31**: `ValheimGameVersion` in `Directory.Build.props` is now `1.0.31` and the publicized reference pack was regenerated from the installed game (`tools/New-ValheimRefs.ps1`). The engine did not move this time - still Unity 6000.0.85f2 - and every `UnityEngine*` assembly is byte-identical to 1.0.30's.
